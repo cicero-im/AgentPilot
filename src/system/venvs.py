@@ -3,6 +3,7 @@ import platform
 import subprocess
 
 from src.utils.filesystem import get_application_path
+from security import safe_command
 
 
 class VenvManager:
@@ -163,7 +164,7 @@ def get_python_path(venv_path):
 
 def run_command(command, shell=False, env=None):
     try:
-        result = subprocess.run(command, shell=shell, env=env, check=True, capture_output=True, text=True)
+        result = safe_command.run(subprocess.run, command, shell=shell, env=env, check=True, capture_output=True, text=True)
         output = result.stdout
     except subprocess.CalledProcessError as e:
         output = e.stdout + "\n" + e.stderr

@@ -7,6 +7,7 @@ import shutil
 import sys
 # import venv
 import argparse
+from security import safe_command
 
 
 def parse_arguments():
@@ -33,7 +34,7 @@ def run_command(command, shell=False, env=None):
     if env:
         print(f"Environment: {env}")
 
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=shell, env=env)
+    process = safe_command.run(subprocess.Popen, command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=shell, env=env)
     output, error = process.communicate()
     if process.returncode != 0:
         print(f"Error executing command: {' '.join(command)}")
