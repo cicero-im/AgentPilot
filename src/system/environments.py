@@ -8,6 +8,7 @@ from src.plugins.openinterpreter.src import interpreter
 from src.gui.config import ConfigJsonTree, ConfigDBTree, ConfigExtTree, ConfigJoined, ConfigFields, ConfigTabs
 from src.gui.widgets import IconButton, find_main_widget
 from src.utils import sql
+from security import safe_requests
 
 
 OI_EXECUTOR = interpreter
@@ -229,11 +230,10 @@ class EnvironmentSettings(ConfigTabs):
                     self.load()
 
                 def sync_pypi_packages(self):
-                    import requests
                     import re
 
                     url = 'https://pypi.org/simple/'
-                    response = requests.get(url, stream=True)
+                    response = safe_requests.get(url, stream=True)
 
                     items = []
                     batch_size = 10000
