@@ -210,7 +210,7 @@ class Page_Settings(ConfigPages):
                     'token': token
                 }
                 try:
-                    response = requests.post(url, data=data)
+                    response = requests.post(url, data=data, timeout=60)
                     response.raise_for_status()  # Raises an HTTPError for bad responses
                     result = response.json()
                 except requests.RequestException as e:
@@ -271,7 +271,7 @@ class Page_Settings(ConfigPages):
                         'password': password
                     }
 
-                    response = requests.post(url, data=data)
+                    response = requests.post(url, data=data, timeout=60)
                     response.raise_for_status()  # Raises an HTTPError for bad responses
                     result = response.json()
                 except Exception as e:
