@@ -12,6 +12,7 @@ from src.utils.filesystem import unsimplify_path
 from contextlib import contextmanager
 from PySide6.QtWidgets import QWidget, QMessageBox
 import requests
+from security import safe_requests
 
 
 def convert_model_json_to_obj(model_json: Any) -> Dict[str, Any]:
@@ -68,7 +69,7 @@ def hash_config(config, exclude=None) -> str:
 
 def network_connected() -> bool:
     try:
-        response = requests.get("https://google.com", timeout=5)
+        response = safe_requests.get("https://google.com", timeout=5)
         return True
     except requests.ConnectionError:
         return False

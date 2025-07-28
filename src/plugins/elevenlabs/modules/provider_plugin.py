@@ -6,10 +6,10 @@ from PySide6.QtWidgets import QMessageBox
 
 from src.gui.config import ConfigFields
 from src.utils import sql
-import requests
 
 from src.utils.helpers import display_message_box
 from src.system.providers import Provider
+from security import safe_requests
 
 cookie = None
 
@@ -84,7 +84,7 @@ class ElevenLabsProvider(Provider):
             time.sleep(1)
         self.last_req = time.time()
 
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -151,7 +151,7 @@ class ElevenLabsProvider(Provider):
             time.sleep(1)
         self.last_req = time.time()
 
-        response = requests.get(url, headers=headers)
+        response = safe_requests.get(url, headers=headers)
 
         if response.status_code != 200:
             raise Exception(response.text)
@@ -201,14 +201,14 @@ class ElevenLabsProvider(Provider):
                 #     while time.time() - last_req < 1:
                 #         time.sleep(0.1)
                 #     last_req = time.time()
-                response = requests.get(url, headers=headers)
+                response = safe_requests.get(url, headers=headers)
                 if response.status_code != 200:
                     raise ConnectionError()
 
                 path = response.json()['state']['maybe_public_bucket_wav_audio_path']
                 if not path: raise Exception("No path")
 
-                audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
+                audio_request = safe_requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
                 with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                     temp_file.write(audio_request.content)
                     return temp_file.name
