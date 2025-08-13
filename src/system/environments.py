@@ -233,7 +233,7 @@ class EnvironmentSettings(ConfigTabs):
                     import re
 
                     url = 'https://pypi.org/simple/'
-                    response = requests.get(url, stream=True)
+                    response = requests.get(url, stream=True, timeout=60)
 
                     items = []
                     batch_size = 10000
