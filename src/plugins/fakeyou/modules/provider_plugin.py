@@ -86,7 +86,7 @@ class FakeYouProvider(Provider):
             time.sleep(1)
         self.last_req = time.time()
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
         if response.status_code != 200:
             raise Exception(response.text)
 
@@ -153,7 +153,7 @@ class FakeYouProvider(Provider):
             time.sleep(1)
         self.last_req = time.time()
 
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=60)
 
         if response.status_code != 200:
             raise Exception(response.text)
@@ -203,14 +203,14 @@ class FakeYouProvider(Provider):
                 #     while time.time() - last_req < 1:
                 #         time.sleep(0.1)
                 #     last_req = time.time()
-                response = requests.get(url, headers=headers)
+                response = requests.get(url, headers=headers, timeout=60)
                 if response.status_code != 200:
                     raise ConnectionError()
 
                 path = response.json()['state']['maybe_public_bucket_wav_audio_path']
                 if not path: raise Exception("No path")
 
-                audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}')
+                audio_request = requests.get(f'https://storage.googleapis.com/vocodes-public{path}', timeout=60)
                 with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as temp_file:
                     temp_file.write(audio_request.content)
                     return temp_file.name
